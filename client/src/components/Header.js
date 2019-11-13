@@ -1,28 +1,38 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Context } from '../context/AuthContext';
+import useResetStateAndLogout from '../hooks/useResetStateAndLogout';
 
 const Header = () => {
   const {
-    state: { token },
-    logout
+    state: { token }
   } = useContext(Context);
+
+  const [resetStateAndLogout] = useResetStateAndLogout();
 
   return (
     <div className="ui small menu">
       <Link to="/" className="item">
         Home
       </Link>
-      <Link to="/protected" className="item">
-        Protected
-      </Link>
+      {token && (
+        <Link to="/todos" className="item">
+          Todos
+        </Link>
+      )}
       <div className="right menu">
         {token ? (
-          <div className="item">
-            <Link to="#" className="ui red button" onClick={logout}>
-              Log out
-            </Link>
-          </div>
+          <React.Fragment>
+            <div className="item">
+              <Link
+                to="#"
+                className="ui red button"
+                onClick={resetStateAndLogout}
+              >
+                Log out
+              </Link>
+            </div>
+          </React.Fragment>
         ) : (
           <React.Fragment>
             <div className="item">

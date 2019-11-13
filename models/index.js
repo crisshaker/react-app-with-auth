@@ -53,3 +53,18 @@ UserSchema.methods.comparePassword = function(candidatePassword) {
 };
 
 mongoose.model('User', UserSchema);
+
+const TodoSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  _user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
+});
+
+mongoose.model('Todo', TodoSchema);

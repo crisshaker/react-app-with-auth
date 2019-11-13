@@ -1,4 +1,4 @@
-import axios from 'axios';
+import serverAPI from '../apis/server';
 import createDataContext from './createDataContext';
 
 const reducer = (state, action) => {
@@ -18,7 +18,7 @@ const tryLocalLogin = dispatch => async () => {
   const token = window.localStorage.getItem('token');
   if (token) {
     try {
-      await axios.post('/auth/verify-token', { token });
+      await serverAPI.post('/auth/verify-token', { token });
       dispatch({ type: 'login', payload: token });
     } catch (err) {
       dispatch({ type: 'logout' });
@@ -32,7 +32,10 @@ const register = dispatch => async ({ email, password }) => {
   dispatch({ type: 'set_loading_state', payload: true });
 
   try {
-    const response = await axios.post('/auth/register', { email, password });
+    const response = await serverAPI.post('/auth/register', {
+      email,
+      password
+    });
     const { token } = response.data;
 
     window.localStorage.setItem('token', token);
@@ -48,7 +51,7 @@ const login = dispatch => async ({ email, password }) => {
   dispatch({ type: 'set_loading_state', payload: true });
 
   try {
-    const response = await axios.post('/auth/login', { email, password });
+    const response = await serverAPI.post('/auth/login', { email, password });
     const { token } = response.data;
 
     window.localStorage.setItem('token', token);

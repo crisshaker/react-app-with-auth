@@ -6,7 +6,9 @@ import Header from './Header';
 import Home from './Home';
 import Register from './Register';
 import Login from './Login';
-import Protected from './Protected';
+import TodoList from './todo/TodoList';
+import TodoCreate from './todo/TodoCreate';
+import TodoEdit from './todo/TodoEdit';
 import ProtectedRoute from './ProtectedRoute';
 import { Context } from '../context/AuthContext';
 
@@ -37,7 +39,13 @@ const App = () => {
             <Route path="/" exact component={Home} />
             <Route path="/register" exact component={Register} />
             <Route path="/login" exact component={Login} />
-            <ProtectedRoute path="/protected" exact component={Protected} />
+            <ProtectedRoute path="/todos" exact component={TodoList} />
+            <ProtectedRoute path="/todos/new" exact component={TodoCreate} />
+            <ProtectedRoute
+              path="/todos/:_id/edit"
+              exact
+              component={TodoEdit}
+            />
           </Switch>
         </div>
       </Router>

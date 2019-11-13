@@ -2,11 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './components/App';
-import { Provider } from './context/AuthContext';
+import { Provider as AuthProvider } from './context/AuthContext';
+import { Provider as TodoProvider } from './context/TodoContext';
 
 ReactDOM.render(
-  <Provider>
-    <App />
-  </Provider>,
+  <AuthProvider>
+    <TodoProvider>
+      <App />
+    </TodoProvider>
+  </AuthProvider>,
   document.querySelector('#root')
 );

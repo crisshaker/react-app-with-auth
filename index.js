@@ -24,7 +24,6 @@ require('./models');
 require('./routes')(app);
 
 if (process.env.NODE_ENV === 'production') {
-  console.log('in production');
   app.use(express.static(path.resolve(__dirname, 'client', 'build')));
 
   app.get('*', (req, res) => {
