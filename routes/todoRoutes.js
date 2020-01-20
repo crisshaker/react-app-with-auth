@@ -7,21 +7,21 @@ async function getTodos(req, res) {
     const todos = await Todo.find({ _user: req.user._id });
     res.send(todos);
   } catch (err) {
-    res.status(403).send({ error: 'request failed' });
+    res.status(500).send({ error: 'request failed' });
   }
 }
 
 async function createTodo(req, res) {
   const { title } = req.body;
   if (!(title && title.toString().trim())) {
-    res.status(403).send({ error: 'title is required' });
+    return res.status(400).send({ error: 'title is required' });
   }
 
   try {
     await Todo.create({ title, _user: req.user._id });
     res.send({ success: true });
   } catch (err) {
-    res.status(403).send({ error: 'request failed' });
+    res.status(500).send({ error: 'request failed' });
   }
 }
 
@@ -29,7 +29,7 @@ async function deleteTodo(req, res) {
   const { todoID } = req.params;
 
   if (!todoID) {
-    return res.status(403).send({ error: 'bad request' });
+    return res.status(400).send({ error: 'bad request' });
   }
 
   try {
@@ -39,13 +39,13 @@ async function deleteTodo(req, res) {
     }
 
     if (req.user._id.toString() !== todo._user.toString()) {
-      return res.status(401).send({ error: 'authorization required' });
+      return res.status(403).send({ error: 'authorization required' });
     }
 
     await todo.remove();
     res.send({ success: true });
   } catch (err) {
-    res.status(403).send({ error: 'request failed' });
+    res.status(500).send({ error: 'request failed' });
     console.log(err);
   }
 }
@@ -54,7 +54,7 @@ async function getTodo(req, res) {
   const { todoID } = req.params;
 
   if (!todoID) {
-    return res.status(403).send({ error: 'bad request' });
+    return res.status(400).send({ error: 'bad request' });
   }
 
   try {
@@ -64,12 +64,12 @@ async function getTodo(req, res) {
     }
 
     if (req.user._id.toString() !== todo._user.toString()) {
-      return res.status(401).send({ error: 'authorization required' });
+      return res.status(403).send({ error: 'authorization required' });
     }
 
     res.send(todo);
   } catch (err) {
-    res.status(403).send({ error: 'request failed' });
+    res.status(500).send({ error: 'request failed' });
     console.log(err);
   }
 }
@@ -78,7 +78,7 @@ async function editTodo(req, res) {
   const { todoID } = req.params;
 
   if (!todoID) {
-    return res.status(403).send({ error: 'bad request' });
+    return res.status(400).send({ error: 'bad request' });
   }
 
   const { title } = req.body;
@@ -93,13 +93,14 @@ async function editTodo(req, res) {
     }
 
     if (req.user._id.toString() !== todo._user.toString()) {
-      return res.status(401).send({ error: 'authorization required' });
+      return res.status(403).send({ error: 'authorization required' });
     }
 
-    await todo.updateOne({ title });
+    todo.title = title;
+    await todo.save();
     res.send({ success: true });
   } catch (err) {
-    res.status(403).send({ error: 'request failed' });
+    res.status(500).send({ error: 'request failed' });
     console.log(err);
   }
 }

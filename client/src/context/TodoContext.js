@@ -2,12 +2,12 @@ import serverAPI from '../apis/server';
 import createDataContext from './createDataContext';
 import history from '../history';
 
-const initialState = { todos: [], loading: false };
+const INITIAL_STATE = { todos: [], loading: false };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'reset_state':
-      return initialState;
+      return INITIAL_STATE;
     case 'set_loading_state':
       return { ...state, loading: action.payload };
     case 'fetch_todos':
@@ -93,5 +93,5 @@ const deleteTodo = dispatch => async _id => {
 export const { Context, Provider } = createDataContext(
   reducer,
   { resetState, fetchTodos, createTodo, editTodo, deleteTodo },
-  initialState
+  INITIAL_STATE
 );

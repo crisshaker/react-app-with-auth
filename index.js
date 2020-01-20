@@ -20,7 +20,6 @@ mongoose
   .catch(() => console.log('ERROR: Database connection'));
 
 require('./models');
-
 require('./routes')(app);
 
 if (process.env.NODE_ENV === 'production') {
